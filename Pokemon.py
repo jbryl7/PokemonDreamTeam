@@ -1,46 +1,43 @@
+import numpy as np
 class Pokemon:
-    def __init__(self, np_row):
-        print(np_row)
-        self.name = np_row[30]
-        self.pokedex_number = np_row[32]
-        self.is_legendary = np_row[40]
-        self.types = [np_row[36]]
-        if np_row[37]:
-            self.types.append(np_row[37])
-        self.health = np_row[28]
-        self.attack = np_row[19]
-        self.defense = np_row[25]
-        self.s_attack = np_row[33]
-        self.s_defense = np_row[34]
-        self.happines = np_row[21]
-        self.base_total = np_row[22]
-        self.capture_rate = np_row[23]
+    def __init__(self, row, pokedex_number):
+        self.name = row[30]
+        self.pokedex_number = pokedex_number
+        self.types = [row[35]]
+        if row[36] != 'nan':
+            self.types.append(row[36])
         self.against = {
-            "bug": float(np_row[1]),
-            "dark": float(np_row[2]),
-            "dragon": float(np_row[3]),
-            "electric": float(np_row[4]),
-            "fairy": float(np_row[5]),
-            "fighting": float(np_row[6]),
-            "fire": float(np_row[7]),
-            "flying": float(np_row[8]),
-            "ghost": float(np_row[9]),
-            "grass": float(np_row[10]),
-            "ground": float(np_row[11]),
-            "ice": float(np_row[12]),
-            "normal": float(np_row[13]),
-            "poison": float(np_row[14]),
-            "psychic": float(np_row[15]),
-            "rock": float(np_row[16]),
-            "steel": float(np_row[17]),
-            "water": float(np_row[18]),
+            "bug": float(row[1]),
+            "dark": float(row[2]),
+            "dragon": float(row[3]),
+            "electric": float(row[4]),
+            "fairy": float(row[5]),
+            "fighting": float(row[6]),
+            "fire": float(row[7]),
+            "flying": float(row[8]),
+            "ghost": float(row[9]),
+            "grass": float(row[10]),
+            "ground": float(row[11]),
+            "ice": float(row[12]),
+            "normal": float(row[13]),
+            "poison": float(row[14]),
+            "psychic": float(row[15]),
+            "rock": float(row[16]),
+            "steel": float(row[17]),
+            "water": float(row[18]),
         }
+        self.attack = row[19]
+        self.happines = row[21]
+        self.base_total = row[22]
+        self.capture_rate = row[23]
+        self.defense = row[25]
+        self.health = row[28]
+        self.s_attack = row[32]
+        self.s_defense = row[33]
+        self.is_legendary = row[39]
     def hits_needed_to_be_defeated(self, other_pokemon):
         k_attacks = 3
-        return self.health / 
-        (other_pokemon.attack * 
-        self.get_defense_multiplier(other_pokemon) /
-         (self.defense / 2.0)) + other_pokemon.happines * k_attacks
+        return self.health / (other_pokemon.attack * self.get_defense_multiplier(other_pokemon) / (self.defense / 2.0)) + other_pokemon.happines * k_attacks
 
     def fight_result(self, other_pokemon):
         p1 = self.hits_needed_to_be_defeated(other_pokemon)
@@ -60,3 +57,6 @@ class Pokemon:
             return self.against[attacker_types[0]] * p1 + self.against[attacker_types[1]] * p2    
         else:
             return self.against[attacker_types[0]]
+
+    def __str__(self):
+        return str(self.__dict__)
