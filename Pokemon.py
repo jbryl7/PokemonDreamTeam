@@ -41,7 +41,7 @@ class Pokemon:
 
     def fight_result(self, other_pokemon):
         p1 = self.hits_needed_to_be_defeated(other_pokemon)
-        p2 = self.hits_needed_to_be_defeated(self)
+        p2 = other_pokemon.hits_needed_to_be_defeated(self)
          
         if p1 == p2:
             return 0.5
