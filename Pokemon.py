@@ -41,7 +41,6 @@ class Pokemon:
         hits_needed = self.health / self.hit_dmg(other_pokemon) + other_pokemon.happines * k_attacks
         if self.is_legendary:
             hits_needed *= 0.3
-        # print((hits_needed, self.hit_dmg(other_pokemon), self.get_defense_multiplier(other_pokemon)))
         return hits_needed
 
     def hit_dmg(self, other_pokemon):
@@ -54,9 +53,9 @@ class Pokemon:
         if p1 == p2:
             return 0.5
         elif p1 > p2: # p2 wins
-            return 0
+            return 1
         else: # p1 wins
-            return 1 
+            return 0
     
     def get_defense_multiplier(self, attacker):
         attacker_types = sorted(attacker.types, key=lambda k: self.against[k])
