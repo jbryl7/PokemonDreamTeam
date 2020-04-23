@@ -3,7 +3,7 @@ import pandas as pd
 from Pokemon import Pokemon
 
 class PokemonList:
-    def __init__(self, pokemon_list, path_to_data):
+    def __init__(self, pokemon_list = None, path_to_data= None):
         if (path_to_data is None):
             self.pokemons = pokemon_list
         else:
@@ -23,7 +23,9 @@ class PokemonList:
     def initialize_fight_results(self):
         for i in range(len(self.pokemons)):
             for j in range(i, len(self.pokemons)):
-                self.fight_results[i][j] = self.pokemons[i].fight_result(self.pokemons[j])
+                res = self.pokemons[i].fight_result(self.pokemons[j])
+                self.fight_results[i][j] = res
+                self.fight_results[j][i] = abs(res - 1)
         self.fight_results.fill
     
     def clean_capture_rate(self, df):
