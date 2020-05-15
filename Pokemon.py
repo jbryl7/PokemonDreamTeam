@@ -37,10 +37,10 @@ class Pokemon:
         self.is_legendary = int(row[39])
 
     def hits_needed_to_be_defeated(self, other_pokemon):
-        k_attacks = 5
+        k_attacks = 1
         hits_needed = self.health / self.hit_dmg(other_pokemon) + other_pokemon.happines * k_attacks
         if self.is_legendary:
-            hits_needed *= 0.3
+            hits_needed *= 0.4
         return hits_needed
 
     def hit_dmg(self, other_pokemon):
@@ -54,16 +54,15 @@ class Pokemon:
             return 0.5
         elif p1 > p2: # p2 wins
             return 1
-        else: # p1 wins
-            return 0
+        # p1 wins
+        return 0
     
     def get_defense_multiplier(self, attacker):
         attacker_types = sorted(attacker.types, key=lambda k: self.against[k])
         if len(attacker_types) == 2:
             p1, p2 = 0.35, 0.65
             return max(0.1, self.against[attacker_types[0]] * p1 + self.against[attacker_types[1]] * p2)
-        else:
-            return max(0.1, self.against[attacker_types[0]])
+        return max(0.1, self.against[attacker_types[0]])
 
     def __str__(self):
         return str(self.__dict__)
