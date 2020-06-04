@@ -24,6 +24,24 @@ class Solver:
         self.pokemons = pokemons
         self.goal_fun = goal_fun_unique_defeated_pokemons
 
+    def solve_greedy_remaining_enemies(self):
+        team = PokemonTeam(self.pokemons)
+        pokemons_to_defeat = copy(self.pokemons)
+        fight_results = copy(pokemons_to_defeat.fight_results)
+
+        while len(team.pokemon_indexes) < 6:
+            pok_index, pok_defeated = -1,-1
+            for p_index in range(len(pokemons_to_defeat)):
+                p_defeated = sum(pokemons_to_defeat.fight_results[p_index])
+                if p_defeated > pok_defeated:
+                    pok_index, pok_defeated = p_index, p_defeated
+            team.add_pokemon(pok_index)
+            pokemons_to_defeat = [pok for pok_index, pok in enumerate(pokemons_to_defeat) if pokemons_to_defeat.fight_results[p_index][pok_index] == 1]
+            pokemons_to_defeat = PokemonList().from_list(pokemons_to_defeat)
+            pokemons_to_defeat.initialize_fight_results()
+        print(team)
+        print(self.goal_fun(team))
+        return team
 
     def solve_greedy(self):
         sum_results_for_each_pok = np.sum(self.pokemons.fight_results, axis=1)
