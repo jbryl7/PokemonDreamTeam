@@ -41,10 +41,11 @@ class Pokemon:
         hits_needed = self.health / self.hit_dmg(other_pokemon) + other_pokemon.happines * k_attacks
         if self.is_legendary:
             hits_needed *= 0.4
-        return hits_needed
+
+        return hits_needed -  2 * self.capture_rate
 
     def hit_dmg(self, other_pokemon):
-        return other_pokemon.attack / (self.defense * self.get_defense_multiplier(other_pokemon))
+        return other_pokemon.attack * self.get_attack_multiplier(other_pokemon) / (self.defense)
 
     def fight_result(self, other_pokemon):
         p1 = self.hits_needed_to_be_defeated(other_pokemon)
@@ -57,7 +58,7 @@ class Pokemon:
         # p1 wins
         return 0
     
-    def get_defense_multiplier(self, attacker):
+    def get_attack_multiplier(self, attacker):
         attacker_types = sorted(attacker.types, key=lambda k: self.against[k])
         if len(attacker_types) == 2:
             p1, p2 = 0.35, 0.65

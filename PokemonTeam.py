@@ -7,7 +7,7 @@ class PokemonTeam:
     def __init__(self, pokemons = None, pokemon_indexes = None):
         self.pokemons = pokemons
         self.pokemon_indexes = pokemon_indexes
-        if self.pokemon_indexes == None:
+        if self.pokemon_indexes is None:
             self.pokemon_indexes = list()
 
     def add_pokemon(self, pokemon_index):
@@ -26,7 +26,9 @@ class PokemonTeam:
             new_index = random.randint(0, len(self.pokemons)-1)
         return new_index
 
-    def simulate_fight(self, other_team):
+
+    # below just for fun 
+    def simulate_fight_with_losing_health(self, other_team):
         other_pokemons = {copy(other_team.pokemons[index]): True for index in other_team.pokemon_indexes}
         my_pokemons = {copy(self.pokemons[index]): True for index in self.pokemon_indexes}
         
@@ -53,14 +55,12 @@ class PokemonTeam:
         print('\n')
         
         
-    def simulate_fight_pok_vs_pok(self, pok1, pok2, my_poks, other_poks):
+    def simulate_fight_pok_vs_pok_with_losing_health(self, pok1, pok2, my_poks, other_poks):
         res = pok1.fight_result(pok2)
         pok1_hits_needed = pok1.hits_needed_to_be_defeated(pok2)
         pok2_hits_needed = pok2.hits_needed_to_be_defeated(pok1)
         hit_diff = int(abs(pok1_hits_needed - pok2_hits_needed))
-        # print(pok1)
-        # print(pok2)
-        # print(hit_diff)
+
         if res == 1:
             other_poks[pok2] = False
         elif res == 0:
