@@ -26,6 +26,13 @@ class PokemonTeam:
             new_index = random.randint(0, len(self.pokemons)-1)
         return new_index
 
+    def contains_legendary(self):
+        for p in self.pokemon_indexes:
+            if self.pokemons[p].is_legendary == 1:
+                return True
+        return False
+
+
 
     # below just for fun 
     def simulate_fight_with_losing_health(self, other_team):

@@ -66,9 +66,6 @@ class Solver:
             team.add_pokemon(team.get_random_pokemon_index_that_is_not_in_team())
 
         team_score = self.goal_fun(team)
-        print("random search start")
-        print(team)
-        print(team_score)
         for i in range(iters):
             new_random_team = team.random_neighbor()
             new_random_team_score = self.goal_fun(new_random_team)
@@ -78,7 +75,6 @@ class Solver:
                 if team_score == OPTIMAL_SCORE:
                     print(f"found optimal score in ", i, " iteration")
                     break
-        print("random search finish")
         print(team)
         print(self.goal_fun(team))
         return team

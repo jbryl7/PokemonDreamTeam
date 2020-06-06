@@ -8,10 +8,14 @@ import pandas as pd
 path_to_data = './data/pokemon.csv'
 pokemons = PokemonList().from_file(path_to_data)
 poks = copy(pokemons)
-# uncomment if ties aren't equal to bonus points
-#pokemons.fight_results[pokemons.fight_results == .5] = 0 
 
 s = Solver(pokemons)
-t1 = s.solve_random_search(200)
-t0 = s.solve_greedy()
-t3 = s.solve_greedy_remaining_enemies()
+# legend = 0
+# for i in range(100):
+#     t1 = s.solve_random_search(200)
+#     if t1.contains_legendary():
+#         legend += 1
+# print(legend)
+
+s.solve_greedy()
+print(s.solve_greedy_remaining_enemies().contains_legendary())
