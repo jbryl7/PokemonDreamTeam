@@ -1,21 +1,30 @@
-from Pokemon import Pokemon
-from PokemonList import PokemonList
 from solver import *
-from PokemonTeam import PokemonTeam
-import numpy as np
-import pandas as pd
+from input_utils import *
+
 
 path_to_data = './data/pokemon.csv'
+args = get_parser().parse_args()
+if args.input:
+    path_to_data = args.input
+else:
+    print('Using default path to data ', path_to_data)
+
 pokemons = PokemonList().from_file(path_to_data)
-poks = copy(pokemons)
+solver = Solver(pokemons)
 
-s = Solver(pokemons)
-# legend = 0
-# for i in range(100):
-#     t1 = s.solve_random_search(200)
-#     if t1.contains_legendary():
-#         legend += 1
-# print(legend)
+if args.greedy:
+    print('greedy')
+    solver.solve_greedy()
+if args.greedy2:
+    print('greedy with remaining enemies')
+    solver.solve_greedy_remaining_enemies()
+if args.random:
+    iters = 100
+    if args.iterations:
+        iters = args.iterations
+    print("Random search with ", iters, " iterations")
+    solver.solve_random_search(iters = iters)
+    
 
-s.solve_greedy()
-print(s.solve_greedy_remaining_enemies().contains_legendary())
+
+

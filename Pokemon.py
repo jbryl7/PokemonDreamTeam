@@ -47,7 +47,7 @@ class Pokemon:
     def hit_dmg(self, other_pokemon):
         legend_multiplier = 1
         if other_pokemon.is_legendary == 1:
-            legend_multiplier = 0.6
+            legend_multiplier = 0.5
         return other_pokemon.attack * self.get_attack_multiplier(other_pokemon) / (self.defense) * legend_multiplier
 
     def fight_result(self, other_pokemon):
@@ -64,7 +64,7 @@ class Pokemon:
     def get_attack_multiplier(self, attacker):
         attacker_types = sorted(attacker.types, key=lambda k: self.against[k])
         if len(attacker_types) == 2:
-            p1, p2 = 1, 2
+            p1, p2 = 1, 1.7
             return max(0.1, self.against[attacker_types[0]] * p1 + self.against[attacker_types[1]] * p2)
         return max(0.1, self.against[attacker_types[0]])
 
