@@ -61,6 +61,13 @@ class PokemonTeam:
             print(list(map(lambda k: k.name, other_pokemons.keys())))
         print('\n')
         
+    def get_types(self):
+        types = {}
+        for i in self.pokemon_indexes:
+            types[self.pokemons[i].types[0]] = 1
+            if len(self.pokemons[i].types) > 1:
+                types[self.pokemons[i].types[1]] = 1
+        return list(types.keys())
         
     def simulate_fight_pok_vs_pok_with_losing_health(self, pok1, pok2, my_poks, other_poks):
         res = pok1.fight_result(pok2)

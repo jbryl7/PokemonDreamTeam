@@ -39,16 +39,12 @@ class Solver:
             pokemons_to_defeat = [pok for pok_index, pok in enumerate(pokemons_to_defeat) if pokemons_to_defeat.fight_results[p_index][pok_index] == 1]
             pokemons_to_defeat = PokemonList().from_list(pokemons_to_defeat)
             pokemons_to_defeat.initialize_fight_results()
-        print(team)
-        print(self.goal_fun(team))
         return team
 
     def solve_greedy(self):
         sum_results_for_each_pok = np.sum(self.pokemons.fight_results, axis=1)
         best_indices = np.argsort(sum_results_for_each_pok)
         team = PokemonTeam(self.pokemons, best_indices[-6:].tolist())
-        print(team)
-        print(self.goal_fun(team))
         return team
 
     def get_weakest_index(self, team):
@@ -64,7 +60,6 @@ class Solver:
         team.add_pokemon(team.get_random_pokemon_index_that_is_not_in_team())
         for i in range(5):
             team.add_pokemon(team.get_random_pokemon_index_that_is_not_in_team())
-
         team_score = self.goal_fun(team)
         for i in range(iters):
             new_random_team = team.random_neighbor()
@@ -73,11 +68,18 @@ class Solver:
                 team = new_random_team
                 team_score = new_random_team_score
                 if team_score == OPTIMAL_SCORE:
-                    print(f"found optimal score in ", i, " iteration")
                     break
-        print(team)
-        print(self.goal_fun(team))
         return team
         
+    def show_result(self, team):
+        print(team)
+        print('score', self.goal_fun(team))
+        r = ''
+        for p in team.pokemon_indexes:
+            r += str(np.sum(team.pokemons.fight_results[p])) + ' '
+
+        print('scores for each pok ', r)
+        print("types in team: ", team.get_types())
+
 
 
