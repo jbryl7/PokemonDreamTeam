@@ -74,11 +74,6 @@ class Solver:
     def show_result(self, team):
         print(team)
         print('score', self.goal_fun(team))
-        r = ''
-        for p in team.pokemon_indexes:
-            r += str(np.sum(team.pokemons.fight_results[p])) + ' '
-
-        print('scores for each pok ', r)
         print("types in team: ", team.get_types())
 
 

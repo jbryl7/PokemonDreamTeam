@@ -34,11 +34,13 @@ class Pokemon:
         self.health = float(row[28])
         self.s_attack = int(row[32])
         self.s_defense = int(row[33])
+        self.speed = int(row[34])
         self.is_legendary = int(row[39])
 
     def hits_needed_to_be_defeated(self, other_pokemon):
-        k_attacks = 10
-        hits_needed = self.health / self.hit_dmg(other_pokemon) - other_pokemon.happines * k_attacks
+        k_attacks = 5
+        speed_bonus = 5
+        hits_needed = self.health / self.hit_dmg(other_pokemon) - other_pokemon.happines * k_attacks - other_pokemon.speed * speed_bonus
         if self.is_legendary:
             hits_needed *= 0.25
 
@@ -64,7 +66,7 @@ class Pokemon:
     def get_attack_multiplier(self, attacker):
         attacker_types = sorted(attacker.types, key=lambda k: self.against[k])
         if len(attacker_types) == 2:
-            p1, p2 = 1, 1.5
+            p1, p2 = 2, 3
             return max(0.1, self.against[attacker_types[0]] * p1 + self.against[attacker_types[1]] * p2)
         return max(0.1, self.against[attacker_types[0]])
 
