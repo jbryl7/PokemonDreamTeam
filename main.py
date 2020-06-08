@@ -28,7 +28,6 @@ if args.random:
 if args.test_pokemon_fight:
     p1 = pokemons[0]
     p2 = pokemons[3]
-
     print(p1.fight_result(p2))
     p1.hits_needed_to_be_defeated2(p2)
     p2.hits_needed_to_be_defeated2(p1)

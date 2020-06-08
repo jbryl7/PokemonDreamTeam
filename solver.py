@@ -26,20 +26,43 @@ class Solver:
 
     def solve_greedy_remaining_enemies(self):
         team = PokemonTeam(self.pokemons)
-        pokemons_to_defeat = copy(self.pokemons)
-        fight_results = copy(pokemons_to_defeat.fight_results)
+        indexes_to_defeat = range(len(self.pokemons))
 
         while len(team.pokemon_indexes) < 6:
-            pok_index, pok_defeated = -1,-1
-            for p_index in range(len(pokemons_to_defeat)):
-                p_defeated = sum(pokemons_to_defeat.fight_results[p_index])
-                if p_defeated > pok_defeated:
-                    pok_index, pok_defeated = p_index, p_defeated
-            team.add_pokemon(pok_index)
-            pokemons_to_defeat = [pok for pok_index, pok in enumerate(pokemons_to_defeat) if pokemons_to_defeat.fight_results[p_index][pok_index] == 1]
-            pokemons_to_defeat = PokemonList().from_list(pokemons_to_defeat)
-            pokemons_to_defeat.initialize_fight_results()
+            pok_index, pok_score = -1, -1
+            for p in range(len(self.pokemons)):
+                if p in team.pokemon_indexes:
+                    continue
+                
+                count_defeated = self.count_defeated(p, indexes_to_defeat)
+                if count_defeated > pok_score:
+                    pok_index = p
+                    pok_score = count_defeated
+            team.pokemon_indexes.append(pok_index)
+            to_defeat = self.get_new_to_defeat(pok_index, indexes_to_defeat)
         return team
+
+    def count_defeated(self, pokemon_index, to_defeat_indexes):
+        ret = 0
+        for p in to_defeat_indexes:
+            if self.pokemons.fight_results[pokemon_index, p] == 1:
+                ret += 1
+        return ret
+
+    def get_new_to_defeat(self, pokemon_index, to_defeat_indexes):
+        to_def = []
+        for p in to_defeat_indexes:
+            if self.pokemons.fight_results[pokemon_index, p] != 1:
+                to_def.append(p)
+        return to_def
+
+
+    def remove_defeated(self, to_defeat, p_index):
+        for i in to_defeat_indexes:
+            if (to_defeat.fight_results[p_index, i] == 1):
+                to_defeat.fight_results[p_index, i] = -1
+        
+
 
     def solve_greedy(self):
         sum_results_for_each_pok = np.sum(self.pokemons.fight_results, axis=1)
