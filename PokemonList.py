@@ -38,9 +38,10 @@ class PokemonList(list):
         df['capture_rate'] = df.capture_rate.astype('int')
 
     def normalize(self, df):
-        columns_to_update = ['capture_rate', 'base_happiness', 'speed']
+        columns_to_update = ['capture_rate', 'base_happiness', 'speed', 'attack', 'defense']
         for col in columns_to_update:
             if col == 'base_happiness':
-                df[col].update((df[col] - df[col].min()) / (df[col].max() - df[col].min()) - 0.5)
+                df[col].update(np.true_divide((df[col] - df[col].min()) , (df[col].max() - df[col].min()))- 0.5)
             else:
-                df[col].update((df[col] - df[col].min()) / (df[col].max() - df[col].min()))
+                df[col].update(np.true_divide((df[col] - df[col].min()) , (df[col].max() - df[col].min())))
+                df[col].update(df[col] + 0.1)

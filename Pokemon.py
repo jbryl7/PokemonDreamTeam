@@ -37,20 +37,36 @@ class Pokemon:
         self.speed = int(row[34])
         self.is_legendary = int(row[39])
 
+
+    # legends_multiplier - parametr został dostosowany w taki sposób aby pokemony legendarne 
+    # występowały w około 10% drużyn generowanych przez algorytm losowy
+    def hits_needed_to_be_defeated2(self, other_pokemon):
+        k_attacks = 5
+        hits_needed = self.health / self.hit_dmg2(other_pokemon) #- other_pokemon.happines * k_attacks
+        if self.is_legendary:
+            hits_needed *= 0.25
+        print(other_pokemon.name, 'needs ' , hits_needed, ' to defeat', self.name)
+        return hits_needed #+  10 * self.capture_rate
+
     def hits_needed_to_be_defeated(self, other_pokemon):
         k_attacks = 5
-        speed_bonus = 5
-        hits_needed = self.health / self.hit_dmg(other_pokemon) - other_pokemon.happines * k_attacks - other_pokemon.speed * speed_bonus
+        hits_needed = self.health / self.hit_dmg(other_pokemon) - other_pokemon.happines * k_attacks
         if self.is_legendary:
             hits_needed *= 0.25
 
-        return hits_needed +  10 * self.capture_rate
+        return hits_needed +  5 * self.capture_rate
 
     def hit_dmg(self, other_pokemon):
         legend_multiplier = 1
         if other_pokemon.is_legendary == 1:
             legend_multiplier = 0.5
         return other_pokemon.attack * self.get_attack_multiplier(other_pokemon) / (self.defense) * legend_multiplier
+
+    def hit_dmg2(self, other_pokemon):
+        legend_multiplier = 1
+        if other_pokemon.is_legendary == 1:
+            legend_multiplier = 0.5
+        return other_pokemon.attack * self.get_attack_multiplier2(other_pokemon) / (self.defense) * legend_multiplier
 
     def fight_result(self, other_pokemon):
         p1 = self.hits_needed_to_be_defeated(other_pokemon)
@@ -63,12 +79,22 @@ class Pokemon:
         # p1 wins
         return 0
     
+    def get_attack_multiplier2(self, attacker):
+        attacker_types = sorted(attacker.types, key=lambda k: self.against[k])
+        if len(attacker_types) == 2:
+            p1, p2 = 1.2,0.8
+            return max(0.1, (self.against[attacker_types[0]] * p1 + self.against[attacker_types[1]] * p2)/2)
+        multiplier = max(0.1, self.against[attacker_types[0]])
+        print('multiplier', attacker.name,  ' against ', self.name, multiplier)
+        return multiplier
+
     def get_attack_multiplier(self, attacker):
         attacker_types = sorted(attacker.types, key=lambda k: self.against[k])
         if len(attacker_types) == 2:
-            p1, p2 = 2, 3
+            p1, p2 = 1.2, 0.8
             return max(0.1, self.against[attacker_types[0]] * p1 + self.against[attacker_types[1]] * p2)
-        return max(0.1, self.against[attacker_types[0]])
+        multiplier = max(0.1, self.against[attacker_types[0]])
+        return multiplier
 
     def __str__(self):
         return str(self.__dict__)
