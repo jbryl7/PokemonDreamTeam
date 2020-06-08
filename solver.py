@@ -39,7 +39,8 @@ class Solver:
                     pok_index = p
                     pok_score = count_defeated
             team.pokemon_indexes.append(pok_index)
-            to_defeat = self.get_new_to_defeat(pok_index, indexes_to_defeat)
+            indexes_to_defeat = self.get_new_to_defeat(pok_index, indexes_to_defeat)
+            print(indexes_to_defeat)
         return team
 
     def count_defeated(self, pokemon_index, to_defeat_indexes):
